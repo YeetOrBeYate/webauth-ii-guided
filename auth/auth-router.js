@@ -26,6 +26,8 @@ router.post('/login', (req, res) => {
     .then(user => {
       if (user && bcrypt.compareSync(password, user.password)) {
         //save a session for the client and send back a cookie
+        //user is the user property of req.session
+        //session is an object that we defiend in our server
         req.session.user = user;
         res.status(200).json({
           message: `Welcome ${user.username}!`,
@@ -42,7 +44,7 @@ router.post('/login', (req, res) => {
 router.get('/logout', (req,res)=>{
   console.log(req.session)
   if(req.session){
-    res.session.destroy(error=>{
+    req.session.destroy(error=>{
       if(error){
         res.status(500).json({message: "sorry needful not complete"})
       }else{

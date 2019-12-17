@@ -10,6 +10,7 @@ const authRouter = require('../auth/auth-router.js');
 const usersRouter = require('../users/users-router.js');
 const knex = require("../database/dbConfig.js");
 const server = express();
+const Restrict = require("../auth/restricted-middleware.js");
 
 //session config
 const sessionConfig = {
@@ -44,7 +45,7 @@ server.use(session(sessionConfig)); // will add a req.session object
 
 
 server.use('/api/auth', authRouter);
-server.use('/api/users', usersRouter);
+server.use('/api/users', Restrict, usersRouter);
 
 server.get('/', (req, res) => {
   res.json({ api: 'up' });
